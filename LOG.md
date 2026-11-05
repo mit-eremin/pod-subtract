@@ -51,3 +51,6 @@ background); the real-frame drivers (legacy, to port); all real data stays in ~/
   one-line README.md). The owner merged it (`--allow-unrelated-histories`, `6c6941e`) and pushed; `main` tracks
   `origin/main`.
 - CLAUDE.md, HANDOFF.md and this LOG now name `pod-subtract`. Nothing else changed; nothing running.
+- Two-page PDF `notes/reports/2026-11-05_bgsub_state_2p.pdf` (state of the problem, for the owner), generator
+  `scripts/state_pdf_2026_11_05.py` run with the serial3ded micromamba python (reportlab 5.1; neither venv has it).
+  Content restates CLAUDE.md status, v2.1 report Sec. 4-8 and ROADMAP 1-6; figure real_d0_v2_v21.png. No new numbers.

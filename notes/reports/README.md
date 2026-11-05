@@ -24,3 +24,6 @@ with new dates. Path mapping when reading them:
 - `2026-11-04_peak_recovery_injection_v0.md`: the injection test bench (oracle background, bin-8 counting-law loss).
 - `2026-11-04_xds_merge_background_v0.md`: why an external background does not help inside XDS (context only; XDS is
   out of scope).
+- `2026-11-05_bgsub_state_2p.pdf`: two-page state of the problem for the owner (goal, approach, v2.1 verdict, real D0
+  performance, defects, next steps, owner decisions). Built by `scripts/state_pdf_2026_11_05.py` (needs reportlab:
+  `~/micromamba/envs/serial3ded/bin/python`); numbers from CLAUDE.md, the v2.1 report and ROADMAP.md, no new measurement.
