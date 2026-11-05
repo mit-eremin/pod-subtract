@@ -38,7 +38,16 @@ WHAT WAS DONE
   runnable here yet (their extra needs: paths -> bgsub.config, podbg.atlas.SEAM_LINES_BIN8 -> vendor.detector.seam_lines).
 - Reports v0, v1, v2, v2.1, peak recovery v0, XDS merge v0 copied verbatim to notes/reports (+ README with the path
   mapping); figures bgsub_v0..v2_1 copied.
-- Docs: CLAUDE.md, ROADMAP.md, HANDOFF.md, this LOG. `git init`; no remote (the owner creates mit-eremin/pod-bgsub).
+- Docs: CLAUDE.md, ROADMAP.md, HANDOFF.md, this LOG. `git init`; no remote (the owner creates mit-eremin/pod-bgsub). [Later the same day: the repo was created as
+  `mit-eremin/pod-subtract`, see the next entry.]
 
 NOT SELF-CONTAINED (by design or still open): the simulator itself (new synthetic designs need a new bank from
 background); the real-frame drivers (legacy, to port); all real data stays in ~/pod_data/background (read-only by path).
+
+## 2026-11-05 (later) — GitHub remote
+
+- The owner created the private repo `mit-eremin/pod-subtract` (name differs from the planned `pod-bgsub`). Added
+  `origin`; the first push was rejected because GitHub had seeded the repo with an "Initial commit" (`cf4b6bf`,
+  one-line README.md). The owner merged it (`--allow-unrelated-histories`, `6c6941e`) and pushed; `main` tracks
+  `origin/main`.
+- CLAUDE.md, HANDOFF.md and this LOG now name `pod-subtract`. Nothing else changed; nothing running.

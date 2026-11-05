@@ -3,8 +3,8 @@
 Subproject of `pod/` (see `../CLAUDE.md` for the shared conventions). Extracted from `pod/background` on 2026-11-05
 (background commit f1e93f5), where it was "item 2" / `podbg.bgsub`. This file is the durable memory of the
 subproject. A cold session reads, in order: `HANDOFF.md`, this file, `ROADMAP.md`, the tail of `LOG.md`.
-Owner: Dmitry Eremin (GitHub `mit-eremin`, Nelson Lab, Caltech). Repo (to be created by the owner):
-`mit-eremin/pod-bgsub`.
+Owner: Dmitry Eremin (GitHub `mit-eremin`, Nelson Lab, Caltech). Repo: `mit-eremin/pod-subtract` (private; created 2026-11-05,
+remote `origin`).
 
 ## Goal (owner's words, 2026-11-04 re-scope + 2026-11-05 scope correction)
 
@@ -159,8 +159,8 @@ grids, CETA/TVIPS geometries) need a new bank from background, or a request to t
 
 - Path-limited commits only: `git commit -m "..." -- <paths>`; NEVER `git add -A` / `git commit -a` (concurrent agents
   share working trees; a staging error swept a pre-registration into another commit in background, A264).
-- The orchestrator pushes (remote `git@github.com:mit-eremin/pod-bgsub.git` once the owner has created it; SSH, no gh
-  auth on this Mac).
+- The orchestrator pushes to `origin` = `git@github.com:mit-eremin/pod-subtract.git` (SSH, no gh auth on this Mac;
+  main tracks origin/main since 2026-11-05).
 
 ## Session close-out (every session)
 

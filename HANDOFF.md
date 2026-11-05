@@ -33,7 +33,7 @@ The simulator bank (`~/pod_data/bgsub/simbank_v1/`) is already built. Rebuild or
   stored counts) with a sidecar; alternatives in ROADMAP item 6.
 - DATASETS for CETA-D bin 2 and TVIPS F30 validation: which sessions (sids) to use, and whether dark / flat frames exist
   for an integrating-detector variance model.
-- (Pointer) the owner creates the GitHub repo `mit-eremin/pod-bgsub`; the orchestrator adds the remote and pushes.
+- (Done 2026-11-05) remote `origin` = `git@github.com:mit-eremin/pod-subtract.git`; `main` tracks `origin/main`.
 
 ## First task
 
