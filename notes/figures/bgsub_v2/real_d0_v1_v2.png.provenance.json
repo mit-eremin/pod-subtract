@@ -1,0 +1,25 @@
+{
+  "target": "/Users/eremin/Library/CloudStorage/Dropbox/pod/background/notes/figures/bgsub_v2/real_d0_v1_v2.png",
+  "produced": "2026-11-05T01:51:37-0800",
+  "pod_version": "0.0.1",
+  "git_commit": "187c6d03df83668c64714a14989bdf11f42f85ac-dirty",
+  "python": "3.12.13",
+  "host": "dhcp-8-229.caltech.edu",
+  "argv": [
+    "scripts/bgsub_v2_figs.py"
+  ],
+  "params": {},
+  "inputs": [
+    {
+      "path": "/Users/eremin/pod_data/background/bgsub_v2/real_test_cells.csv",
+      "bytes": 70785,
+      "mtime": "2026-11-05T01:50:56"
+    },
+    {
+      "path": "/Users/eremin/pod_data/background/bgsub_v2/real_test_pulls.csv",
+      "bytes": 53828,
+      "mtime": "2026-11-05T01:50:56"
+    }
+  ],
+  "note": "bgsub v2 figures"
+}

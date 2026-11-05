@@ -1,0 +1,39 @@
+{
+  "target": "/Users/eremin/Library/CloudStorage/Dropbox/pod/background/notes/figures/bgsub_v2/classic_d0_residuals.png",
+  "produced": "2026-11-05T01:01:55-0800",
+  "pod_version": "0.0.1",
+  "git_commit": "d5adf9bb8e6a5c06dc62842bbdc5ead3c4e921ee-dirty",
+  "python": "3.12.13",
+  "host": "dhcp-8-229.caltech.edu",
+  "argv": [
+    "scripts/bgsub_v2_diag_classic_fig.py"
+  ],
+  "params": {
+    "cases": [
+      [
+        "sb7857cd8",
+        1
+      ],
+      [
+        "s8975a6a4",
+        4
+      ],
+      [
+        "s768d180b",
+        0
+      ],
+      [
+        "s7a2f9db5",
+        2
+      ]
+    ]
+  },
+  "inputs": [
+    {
+      "path": "/Users/eremin/pod_data/background/s_level_bin4_v0/frames",
+      "bytes": 1120,
+      "mtime": "2026-11-03T17:19:05"
+    }
+  ],
+  "note": "bgsub v2 stage 1 classic D0 residual figure"
+}

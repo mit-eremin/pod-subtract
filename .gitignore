@@ -1,0 +1,16 @@
+.venv/
+build/
+*.egg-info/
+__pycache__/
+*.pyc
+.pytest_cache/
+.numba_cache/
+# data never lives in the repo: ~/pod_data/bgsub/ (own) and ~/pod_data/background/ (read-only)
+data/
+*.parquet
+*.npy
+!tests/data/*.npz
+.DS_Store
+# Claude Code: worktrees are full checkouts, never commit them
+.claude/worktrees/
+.claude/settings.local.json
