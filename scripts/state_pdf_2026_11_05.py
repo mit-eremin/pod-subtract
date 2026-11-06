@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "notes/reports/2026-11-05_bgsub_state_2p.pdf"
 FIG = ROOT / "notes/figures/compare_v0/zoom_b4_mov11_001.png"
 FIG2 = ROOT / "notes/figures/compare_v0/overlays.png"
+FIGV1 = ROOT / "notes/figures/compare_v1"
 HEAD = "see footer date"
 
 INK = colors.HexColor("#1b1f23"); MUTED = colors.HexColor("#5b6470"); RULE = colors.HexColor("#c9ced6")
@@ -62,7 +63,7 @@ def img(path, width):
 def footer(canvas, doc):
     canvas.saveState(); canvas.setFont("Helvetica", 7.5); canvas.setFillColor(MUTED)
     canvas.drawString(0.6 * inch, 0.42 * inch, "pod/bgsub  -  state of the problem 2026-11-05 (evening)  -  D. Eremin, Nelson Lab, Caltech  -  repo mit-eremin/pod-subtract")
-    canvas.drawRightString(letter[0] - 0.6 * inch, 0.42 * inch, f"page {doc.page} of 2")
+    canvas.drawRightString(letter[0] - 0.6 * inch, 0.42 * inch, f"page {doc.page} of 3")
     canvas.setStrokeColor(RULE); canvas.setLineWidth(0.5); canvas.line(0.6 * inch, 0.58 * inch, letter[0] - 0.6 * inch, 0.58 * inch); canvas.restoreState()
 
 
@@ -156,6 +157,30 @@ S.extend(bullets([
     "<b>Owner decisions.</b> (a) per-frame output format (proposed: float32 background map + variance map in stored counts, subtracted frame on request, sidecar); (b) CETA-D / TVIPS datasets; "
     "(c) the mov11 XDS.INP beam centre is 75 px off and was never refined by XDS (B2): re-check the XDS-merge study.",
 ]))
+
+
+S.append(PageBreak())
+S.append(Paragraph("6. Every binning and all three detectors, with the images (compare v1, 2026-11-05 night)", st_h))
+S.append(Paragraph("One real dataset per detector x binning, the same three methods on each, one image panel per dataset (original with every method's peaks; each method's background; each method's subtracted image). "
+                   "Peaks per frame = median over 5 frames [min-max], peaks within 3 px of the mask dropped. superxds = the validated numpy port (XDS defaults); 'owner's XDS run' = the archive's own XDS run with stricter thresholds. "
+                   "CETA-D and TVIPS are integrating detectors with spatially correlated noise: bgsub ran with a read-noise + correlation law estimated from the frame (declared, not calibrated; a 3 x 3 window factor of 2.8 / 3.1); "
+                   "with a plain Poisson law it had flagged 8-47 % of the pixels. All panels: notes/reports/2026-11-05_compare_v1_panels.pdf; report notes/reports/2026-11-05_compare_v1_images.md.", st_b))
+S.append(tbl([
+    ["dataset", "counts / px", "bgsub law", "bgsub peaks", "pyREyes", "superxds (defaults)", "owner's XDS", "ms / frame bgsub / pyREyes / COLSPOT"],
+    ["Apollo bin 4, 2048<super>2</super>, rotation movie", "1.6", "apollo(4) + 1", "156 [132-188]", "50 [36-54]", "34 [0-56]", "13", "157 / 152 / 359"],
+    ["Apollo bin 8, 1024<super>2</super>, fly-scan snapshots", "0.08", "apollo(8)", "22 [16-48]", "20 [9-25]", "4 [0-6]", "-", "57 / 30 / 77"],
+    ["Apollo bin 16, 512<super>2</super>, verify miniscan", "0.8", "apollo(16)", "53 [47-75]", "19 [15-21]", "2 [0-7]", "-", "182 / 8 / 18"],
+    ["CETA-D bin 2, 2048<super>2</super>, rotation movie", "59", "poisson(g 3.5, rv 8) x f 2.8 (XDS gain 4.1)", "101 [74-136]", "20 [7-27]", "12 [0-35]", "16", "1428 / 152 / 351"],
+    ["TVIPS bin 2, 2048<super>2</super>, rotation movie, 300 kV", "54", "poisson(g 10.3, rv 0) x f 3.1 (XDS gain 6.9)", "34 [22-40]", "9 [4-9]", "12 [0-16]", "3", "186 / 144 / 353"],
+], [1.75 * inch, 0.55 * inch, 1.55 * inch, 0.8 * inch, 0.65 * inch, 0.8 * inch, 0.55 * inch, 0.65 * inch]))
+S.append(Spacer(1, 4))
+pair = Table([[img(FIGV1 / "panel_apollo_b16_crop.png", 0.49 * W), img(FIGV1 / "panel_ceta_b2_crop.png", 0.49 * W)]], colWidths=[0.5 * W, 0.5 * W])
+pair.setStyle(TableStyle([("LEFTPADDING", (0, 0), (-1, -1), 0), ("RIGHTPADDING", (0, 0), (-1, -1), 2), ("TOPPADDING", (0, 0), (-1, -1), 0), ("BOTTOMPADDING", (0, 0), (-1, -1), 0)]))
+S.append(pair)
+S.append(Paragraph("Left: Apollo bin 16 (512<super>2</super>, grossular, central crop). Right: CETA-D (2048<super>2</super>, grossular rotation movie, central crop). In each panel: top row the original frame with every method's peaks, bgsub's background, the superxds / XDS "
+                   "background on the same log scale; bottom row each method's subtracted image with its own peaks (pyREyes: its difference-of-Gaussians image, it has no background). bgsub leaves a flat field with the spots, weak ones included; "
+                   "the sweep-averaged XDS table x one scalar leaves ring and halo residuals and marks the bright spots; on the CETA-D both leave the glow crescent next to the stop edge, which is wider than the penumbra model. "
+                   "Full-size panels for all five datasets, including the TVIPS: notes/reports/2026-11-05_compare_v1_panels.pdf.", st_cap))
 
 doc.build(S, onFirstPage=footer, onLaterPages=footer)
 print("wrote", OUT)

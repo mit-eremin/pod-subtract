@@ -86,3 +86,20 @@ background); the real-frame drivers (legacy, to port); all real data stays in ~/
   `~/pod_data/bgsub/compare_v0/superxds_py_validate_mov11.log`.
 - Three-method comparison table added (report Sec. 7; state PDF page 2 rebuilt around it, with the port's validation
   table; zoom figure stays in the report only). PDF still 2 pages.
+
+## 2026-11-05 (night) — compare v1: every binning and all three detectors, with images
+
+- Owner: "hard to compare without looking at the actual images; find a dataset at each binning and from all three
+  detectors, count peaks per method, compare visually." Datasets located and copied (private): Apollo bin 4 (mov11),
+  bin 8 (compare-v0 snapshots), bin 16 (the only bin-16 archive session, FLYSCAN/20260902 verify miniscan, 55 frames),
+  CETA-D (Arctica_data/2025-02-12-reyes grossular mov11, 112 frames + auto_process XDS), TVIPS (F30_data/2025-02-25-reyes
+  mov12, 101 frames + XDS), via ringcal's XDS ground-truth inventory. `scripts/compare_v1.py`; report
+  `notes/reports/2026-11-05_compare_v1_images.md`; panels `notes/figures/compare_v1/` and
+  `notes/reports/2026-11-05_compare_v1_panels.pdf` (table + 10 pages of panels).
+- Peaks per frame bgsub / pyREyes / superxds: Apollo bin 4 156 / 50 / 34 (owner's XDS 13), bin 8 22 / 20 / 4, bin 16
+  53 / 19 / 2, CETA-D 101 / 20 / 12 (owner's XDS 16), TVIPS 34 / 9 / 12 (3).
+- Found: CETA-D and TVIPS need a variance model with read noise AND spatial noise correlation (3x3 window factor 2.8 /
+  3.1); with a plain Poisson law bgsub flagged 8-47 % of pixels (B7). Declared estimate used here; ROADMAP item 3 stands.
+  Stop edge glow 20-40 px on both integrating detectors not modelled (B8); CETA-D fits 1.4-3.8 s per frame (B9).
+- Harness lessons: stop mask relative to the frame's median (absolute pedestal rule failed at bin 16); E = BKGINIT x RATIO
+  without a second /1000; mask-adjacent peaks dropped for all methods.

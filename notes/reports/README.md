@@ -29,3 +29,5 @@ with new dates. Path mapping when reading them:
   `~/micromamba/envs/serial3ded/bin/python`); numbers from CLAUDE.md, the v2.1 report and ROADMAP.md, no new measurement.
 - `2026-11-05_compare_v0.md`: bgsub vs pyREyes vs XDS / superxds on real bin-8 and bin-4 frames (mechanisms, peaks,
   intensities, radial residuals; Sec. 1.4 the validated numpy port of the superxds math). Figures `notes/figures/compare_v0/`.
+- `2026-11-05_compare_v1_images.md` + `2026-11-05_compare_v1_panels.pdf`: the three methods on real frames from Apollo bin 4 / 8 / 16,
+  CETA-D and TVIPS, with one image panel per dataset (`notes/figures/compare_v1/`).

@@ -39,7 +39,9 @@ Judge everything on the BACKGROUND only (CLAUDE.md, Goal).
 
 ## Next
 
-3. **Integrating-detector variance model, then CETA-D bin 2 validation.** `CountLaw.poisson(gain, read_var)` exists but
+3. **Integrating-detector variance model, then CETA-D bin 2 validation.** compare v1 (2026-11-05) measured on real CETA-D
+   and TVIPS movies: gain ~3.5-10, read variance 0-8, and a 3x3 window factor of 2.8-3.1 from spatially correlated noise;
+   the model must carry the correlation. Datasets now local under ~/pod_data/bgsub/compare_v1/private/. `CountLaw.poisson(gain, read_var)` exists but
    no CETA calibration does (gain per electron, read noise, offset, correlated noise, no rounding). Derive it from data
    (dark / flat or film frames), pre-register, then validate on CETA bin 2 sessions (datasets: OWNER QUESTION).
 4. **TVIPS F30 validation** (TF30, 300 kV). Reuse `pod/ringcal`'s TVIPS readers (vendor them with a header, as here).
