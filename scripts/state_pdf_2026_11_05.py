@@ -15,8 +15,9 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, Tabl
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "notes/reports/2026-11-05_bgsub_state_2p.pdf"
-FIG = ROOT / "notes/figures/bgsub_v2_1/real_d0_v2_v21.png"
-HEAD = "1e10212"
+FIG = ROOT / "notes/figures/compare_v0/zoom_b4_mov11_001.png"
+FIG2 = ROOT / "notes/figures/compare_v0/overlays.png"
+HEAD = "00f13bf"
 
 INK = colors.HexColor("#1b1f23"); MUTED = colors.HexColor("#5b6470"); RULE = colors.HexColor("#c9ced6")
 ACCENT = colors.HexColor("#0b5fa5"); BAND = colors.HexColor("#eef3f8")
@@ -74,7 +75,7 @@ S.append(Paragraph("Background subtraction for diffraction frames: state of the 
 S.append(Paragraph("Subproject <b>pod/bgsub</b> (GitHub mit-eremin/pod-subtract, main at " + HEAD + "), Dmitry Eremin, Nelson Lab, Caltech. "
                    "Split out of pod/background on 2026-11-05 at background commit f1e93f5; package <b>bgsub</b>, 47 tests pass, self-contained "
                    "(vendored count law, detector, masks, centre, provenance; a frozen simulator-v1 frame bank, 716 frames reproduced bit for bit). "
-                   "This page states the problem and where the algorithm stands; page 2 gives the measured performance, the known defects and the next steps. "
+                   "Page 1 states the problem and where the algorithm stands by its own rules; page 2 measures it against pyREyes and XDS / superxds on real frames (compare v0, same day), then the defects and next steps. "
                    "Session ids are anonymous (sids).", st_sub))
 
 S.append(Paragraph("1. The problem, in the owner's words (re-scope 2026-11-04, scope correction 2026-11-05)", st_h))
@@ -102,7 +103,8 @@ S.append(Paragraph("The Apollo count law it carries: stored value = round-half-e
 
 S.append(Paragraph("3. Where it stands: v2.1 against its own pre-registered rules (2026-11-05)", st_h))
 S.append(Paragraph("Every version is pre-registered (rules committed before the test run, no parameter changes after it, failures reported with their cells). "
-                   "The verdict rule: VALID iff R1, R2, R3 and R5 pass and R4 passes in the F and classic regimes. <b>v2.1 is NOT VALID, by two narrow margins, both about the background.</b>", st_b))
+                   "The verdict rule: VALID iff R1, R2, R3 and R5 pass and R4 passes in the F and classic regimes. <b>v2.1 is NOT VALID by that rule, by two narrow margins.</b> "
+                   "All thresholds (0.5 %, 3.2 SE, 50 ms, ...) were set by the orchestrator, not the owner; the owner ruled on 2026-11-05 that the <b>speed gate is relative</b> (single-CPU Python), so R5 is reported, not a verdict.", st_b))
 S.append(tbl([
     ["Rule", "What it tests", "v2 (previous)", "v2.1 (current)", "v2.1 status"],
     ["R1", "Synthetic unbiasedness: 60 lacey cells (bin 4 / 8 x dose x1 / 3 / 10 x plain / structured x D0-D4), |beta| <= max(0.5 %, 3.2 SE), for G and H",
@@ -117,47 +119,37 @@ S.append(Paragraph("R6 and R7 (sharp ring) are reported, not in the verdict. Rep
 S.append(PageBreak())
 
 # ------------------------------------------------------------------ page 2
-S.append(Paragraph("4. Measured performance of the background estimate", st_h))
-S.append(Paragraph("Background error next to the beam stop (D0, d 4-8 A) on real Apollo frames with injected peaks, in units of the spot box's own count noise, spots without a host overlap. "
-                   "Smaller is better; FLAT is the XDS / DIALS-style local flat background on the same spots. Synthetic plain lacey frames: G2.1 and H2.1 0.07-0.16 vs FLAT 0.38-0.62; "
-                   "synthetic structured frames at D4: H2.1 0.39-0.40 vs v2 0.45-0.49 vs G 0.84-0.97.", st_b))
+S.append(Paragraph("4. Measured against pyREyes and XDS / superxds on real frames (compare v0, 2026-11-05)", st_h))
+S.append(Paragraph("40 real Apollo frames: 30 bin-8 fly-scan snapshots (1024<super>2</super>, 20 REyes Good + 10 Bad, two sessions, ~0.08 counts / px background) and 10 frames of a bin-4 rotation movie "
+                   "(2048<super>2</super>, XDS's own SPOT.XDS as a reference). <b>pyREyes</b> 3.6.3 has no background model (difference of Gaussians, global mean + k std threshold, components, a count; no per-peak intensity; "
+                   "re-implemented and verified bit for bit). <b>superxds</b> is a line-by-line Fortran port of XDS (static box-mean table x one scalar per frame; Poisson strong-pixel test; 'intensity' = sum of significance labels); "
+                   "it does not build on macOS / arm64, so the installed XDS stood in. All peaks were measured on the ORIGINAL frame in the same disc (3 px at bin 8, 5 px at bin 4).", st_b))
 S.append(tbl([
-    ["Regime (real frames)", "Spots", "v2.1 H2.1 (hybrid)", "v2.1 G2.1 (global)", "v2 H2", "FLAT"],
-    ["F: fly-scan, clean film, bin 8", "13,650", "<b>0.08</b>", "0.32", "0.03", "0.40"],
-    ["BA: bar-adjacent, bin 8", "14,280", "<b>0.34</b>", "0.46", "0.33", "0.50"],
-    ["CN: crystal neighbour, bin 8", "12,600", "<b>0.37</b>", "0.57", "0.35", "0.60"],
-    ["classic, bin 4 (20 test sessions)", "8,400", "<b>1.57</b>", "1.58", "1.76", "2.98"],
-    ["classic confirmation (9 sessions)", "3,430", "0.50", "<b>0.48</b>", "0.51", "1.30"],
-], [2.3 * inch, 0.7 * inch, 1.15 * inch, 1.15 * inch, 0.9 * inch, 1.1 * inch]))
-S.append(Spacer(1, 4))
+    ["Question", "bgsub v2.1", "pyREyes", "XDS / superxds", "flat annulus (XDS / DIALS-style local box)"],
+    ["Background on spot-free pixels, by radius", "unbiased: |residual| < 1 % in every 32-px band, both binnings; bin 8: mean and count-law variance match the data to 1e-4", "none (band-pass only)", "bin 4: -9 to -14 % in the halo, high in the tail; bin 8: collapses (0.07 % of pixels pass its background screen)", "fit to the same pixels: not a test"],
+    ["Peaks per frame (median)", "bin 8 Good 23 / Bad 14; bin 4 187 (count-law flags, >= 5 sigma per component)", "bin 8 Good 14 / Bad 17 (half are single stray electrons; fires on the stop edge); bin 4 45", "bin 8: 4 (defaults, 15-frame pseudo-sweep; single frames fail); bin 4: 46 (defaults), 9 (owner 4/7/5)", "-"],
+    ["Agreement", "holds 74-87 % of XDS and pyREyes peaks at bin 4 (74 % of XDS at bin 8) + 2-4x more weak high-angle candidates", "87 % of its bin-4 peaks are in bgsub; 58 % in XDS", "76 % in bgsub; 56 % in pyREyes", "-"],
+    ["Background under the same peaks (median ratio to bgsub) and net intensity", "1 (reference); net I median 23 (bin 8), 101 (bin 4) counts", "no background", "1.04 (bin 8), 1.01 (bin 4): agrees under peaks although wrong between them", "<b>1.15 at both binnings: loses 5 % (bin 8) and 14 % (bin 4) of the net intensity, ~17 % on bright spots</b>"],
+    ["Time per frame (this Mac)", "62 ms (1024<super>2</super>), 155 ms (2048<super>2</super>), Python + numba", "31 / 149 ms (two blurs)", "33 / 125 ms (Fortran, 4 threads)", "-"],
+], [1.35 * inch, 1.75 * inch, 1.35 * inch, 1.55 * inch, 1.3 * inch]))
+S.append(Spacer(1, 3))
 S.append(img(FIG, 0.9 * W))
-S.append(Paragraph("D0 background error (rmse / box noise, log scale), v2 H2 vs v2.1 H2.1 vs FLAT: left all test spots, middle test spots without a host overlap (the verdict form), right the "
-                   "classic confirmation set. With all spots, classic H2.1 7.20 vs FLAT 5.96 and F 0.36: sample Bragg spots of the host under the injected spot (an overlap, not background; A266, A279). "
-                   "Outside D0, H2.1 = G2.1 within 0.01-0.03. Figure: notes/figures/bgsub_v2_1/real_d0_v2_v21.png.", st_cap))
+S.append(Paragraph("Eight spots on one bin-4 frame found by all three methods: raw (top) and after bgsub subtraction (bottom), same colour scale; captions give the disc sum, bgsub's background and the net intensity, with the flat-annulus net in brackets "
+                   "(8-25 % lower on every spot). Full tables and the overlays of every method's peaks on the original frames: notes/reports/2026-11-05_compare_v0.md, notes/figures/compare_v0/.", st_cap))
 
 S.append(Paragraph("5. Known defects and limits", st_h))
 S.extend(bullets([
-    "<b>Sparse counts (R1).</b> At 0.2 stored counts per box the gate fires at its nominal 2.5 % rate on noise and five firings move a cell by 0.5 %; the failing cell also has G2.1 itself at 3.05 SE on those frames "
-    "(on 64 fresh frames H2.1 is -0.47 +- 0.72 %, A276). The test had no power; it needs a re-test with enough frames and possibly a count-level-aware gate.",
-    "<b>Sharp rings (A277, R7 reported).</b> A film ring narrower than the spline knots (classic sb7857cd8, 4.6 A) is not removed (ring-zone dispersion 16.2 -> 15.1 against a target of 8.1; no harm elsewhere, max ratio 1.002): 34-81 % of its pixels are count-law flags and the skipped ring mean breaks down. "
-    "A full-frame robust ring term was tried and rejected (it breaks the background next to the stop, A275); a ring-zone-only high-breakdown first pass is the open option.",
-    "<b>Speed (A278).</b> 54.2 ms at 1024<super>2</super> against 50 ms, measured under load; the elliptical kernels cost +2.7 ms and can be fused into existing passes (~2.5 ms back).",
-    "<b>Structure outside the model.</b> Anything neither smooth on the model's scales nor linear at the annulus scale is not modelled; a compact host overlap under a spot is invisible to the probes (A279).",
-    "<b>Variance at bin 16</b> is not honest (saturated cores on the wrong dead-time branch, A196); bin 16 is synthetic-only. The penumbra columns are ignored by var_map today.",
-    "<b>Detector coverage.</b> Apollo bin 8 (fly-scan) and bin 4 (classic) are tested on real frames; <b>CETA-D bin 2 and TVIPS F30 are untested</b> and need an integrating-detector variance model "
-    "(gain per electron, read noise, offset, no rounding) before any run. Evaluation-code defect A281 (duplicated rows in the v2 / v2.1 pull tables; R4 and D0 unaffected) is open.",
+    "<b>Sparse counts (R1).</b> The one failing synthetic cell (0.2 counts per box) had no statistical power (SE 0.72 % vs a 0.5 % limit); on 64 fresh frames H2.1 is -0.47 +- 0.72 %. Needs a power-adequate re-test, possibly a count-level-aware gate.",
+    "<b>Sharp rings (A277).</b> A film ring narrower than the spline knots (4.6 A, one classic session) is not removed: most of its pixels are count-law flags. Open option: a ring-zone high-breakdown first pass.",
+    "<b>Coverage.</b> Apollo bin 8 and bin 4 tested on real frames; bin 16 synthetic only (variance not honest, A196); <b>CETA-D bin 2 and TVIPS F30 untested</b>, need an integrating-detector variance model first. Not modelled: structure neither smooth on the model's scales nor linear at the annulus scale (A279). compare v0 is descriptive, not pre-registered, no truth for real peaks.",
 ]))
 
-S.append(Paragraph("6. Next steps (ROADMAP.md, in order) and what the owner must decide", st_h))
+S.append(Paragraph("6. Next steps (ROADMAP.md) and what the owner must decide", st_h))
 S.extend(bullets([
-    "<b>1. Background-only validity spec</b>, pre-registered: bias everywhere and under masked spots with stated power per cell; per-pixel variance honesty (replicates on synthetic frames, split-half / twins on real); "
-    "zones (stop, penumbra, arm, bar edges, crystal neighbours); count-law regimes (bin 4 / 8 / 16, sparse to bright, gain on / off, dead-time ceiling, zero level); speed on an idle machine; "
-    "injected peaks only against an oracle background. Replaces the integration-flavoured R1-R7.",
-    "<b>2. Bring v2.1 to valid under it:</b> fuse the elliptical kernels (< 50 ms); a power-adequate sparse-cell re-test; fix A281 when the real-frame drivers are ported from legacy/podbg_scripts; optionally the ring-zone first pass.",
-    "<b>3-5.</b> Integrating-detector variance model, then CETA-D bin 2 validation; TVIPS F30 validation (ringcal's readers, vendored); honest variance at bin 16.",
-    "<b>Owner decisions (ask, do not decide):</b> (a) <b>output format</b> per frame: proposed a float32 background map + per-pixel variance map in stored counts, the subtracted frame on request, and a sidecar "
-    "(version, count law, zero level, mask, centre); alternatives are radial-model coefficients + covariance, or electrons; decide before any file writer or CLI is built. "
-    "(b) <b>datasets</b> for CETA-D bin 2 and TVIPS F30 (which sids; whether dark / flat frames exist).",
+    "<b>1. Background-only validity spec</b>, pre-registered, with thresholds the owner endorses: bias everywhere and under masked spots with stated power; per-pixel variance honesty; stop / bar / crystal zones; count-law regimes; timing reported, not gated. "
+    "<b>2.</b> Bring v2.1 to valid under it (sparse-cell re-test; optional ring-zone pass). <b>3-5.</b> Integrating-detector variance model, then CETA-D bin 2 and TVIPS F30 validation; honest variance at bin 16.",
+    "<b>Owner decisions:</b> (a) per-frame <b>output format</b> (proposed: float32 background map + per-pixel variance map in stored counts, subtracted frame on request, sidecar with version / count law / zero level / mask / centre); "
+    "(b) <b>datasets</b> for CETA-D bin 2 and TVIPS F30; (c) whether to run superxds itself on a Linux x86-64 box (B1); (d) the mov11 XDS.INP beam centre is 75 px off and was never refined by XDS (B2): re-check the XDS-merge study.",
 ]))
 
 doc.build(S, onFirstPage=footer, onLaterPages=footer)

@@ -74,3 +74,6 @@ background); the real-frame drivers (legacy, to port); all real data stays in ~/
   and loses 5-14 % net intensity (17 % on bright spots). Timing per frame: bgsub 62-155 ms, DoG 31-149 ms, COLSPOT 33-125 ms.
 - Found on the way: mov11's XDS.INP beam centre is 75 px off (B2, never refined); Friedel-pair centre used.
 - venv additions: tifffile, scikit-image, matplotlib (harness extra).
+- State PDF `notes/reports/2026-11-05_bgsub_state_2p.pdf` rebuilt (generator `scripts/state_pdf_2026_11_05.py`): page 1 notes
+  that the thresholds were the orchestrator's and the speed gate is relative (owner); page 2 is now the compare-v0
+  measurement against pyREyes and XDS / superxds (table + zoom figure), defects and next steps condensed.
