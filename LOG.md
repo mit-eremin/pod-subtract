@@ -84,3 +84,5 @@ background); the real-frame drivers (legacy, to port); all real data stays in ~/
   candidates), not background pixels; at bin 8 the variance screen yields 0.06 % candidates and 99.9 % of the frame is
   unflagged. Report Sec. 1.4 + Sec. 8 corrected; state PDF rebuilt (page 2); validation log
   `~/pod_data/bgsub/compare_v0/superxds_py_validate_mov11.log`.
+- Three-method comparison table added (report Sec. 7; state PDF page 2 rebuilt around it, with the port's validation
+  table; zoom figure stays in the report only). PDF still 2 pages.
