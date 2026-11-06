@@ -77,3 +77,10 @@ background); the real-frame drivers (legacy, to port); all real data stays in ~/
 - State PDF `notes/reports/2026-11-05_bgsub_state_2p.pdf` rebuilt (generator `scripts/state_pdf_2026_11_05.py`): page 1 notes
   that the thresholds were the orchestrator's and the speed gate is relative (owner); page 2 is now the compare-v0
   measurement against pyREyes and XDS / superxds (table + zoom figure), defects and next steps condensed.
+- superxds math ported to numpy (`scripts/superxds_py.py`: INIT, COLSPOT, JOINCOLSPOT from the superxds source) and
+  VALIDATED against the installed XDS: bin-8 pseudo-sweep BKGINIT 99.98 % exact (rest +-1 LSB), GAIN 99.97 %, NCLEAR /
+  NSTRONG exact 15/15, 58/58 spots identical; bin-4 mov11 sweep BKGINIT 99.985 %, NSTRONG exact 116/120 (4 px of 509,619),
+  5444/5444 spots matched (5442 identical intensities). Correction (B3): COLSPOT.LP's NBKG is NCLEAR (cleared
+  candidates), not background pixels; at bin 8 the variance screen yields 0.06 % candidates and 99.9 % of the frame is
+  unflagged. Report Sec. 1.4 + Sec. 8 corrected; state PDF rebuilt (page 2); validation log
+  `~/pod_data/bgsub/compare_v0/superxds_py_validate_mov11.log`.

@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "notes/reports/2026-11-05_bgsub_state_2p.pdf"
 FIG = ROOT / "notes/figures/compare_v0/zoom_b4_mov11_001.png"
 FIG2 = ROOT / "notes/figures/compare_v0/overlays.png"
-HEAD = "00f13bf"
+HEAD = "see footer date"
 
 INK = colors.HexColor("#1b1f23"); MUTED = colors.HexColor("#5b6470"); RULE = colors.HexColor("#c9ced6")
 ACCENT = colors.HexColor("#0b5fa5"); BAND = colors.HexColor("#eef3f8")
@@ -61,7 +61,7 @@ def img(path, width):
 
 def footer(canvas, doc):
     canvas.saveState(); canvas.setFont("Helvetica", 7.5); canvas.setFillColor(MUTED)
-    canvas.drawString(0.6 * inch, 0.42 * inch, f"pod/bgsub  -  state of the problem 2026-11-05  -  D. Eremin, Nelson Lab, Caltech  -  repo mit-eremin/pod-subtract @ {HEAD}")
+    canvas.drawString(0.6 * inch, 0.42 * inch, "pod/bgsub  -  state of the problem 2026-11-05 (evening)  -  D. Eremin, Nelson Lab, Caltech  -  repo mit-eremin/pod-subtract")
     canvas.drawRightString(letter[0] - 0.6 * inch, 0.42 * inch, f"page {doc.page} of 2")
     canvas.setStrokeColor(RULE); canvas.setLineWidth(0.5); canvas.line(0.6 * inch, 0.58 * inch, letter[0] - 0.6 * inch, 0.58 * inch); canvas.restoreState()
 
@@ -72,7 +72,7 @@ S = []
 
 # ------------------------------------------------------------------ page 1
 S.append(Paragraph("Background subtraction for diffraction frames: state of the problem", st_title))
-S.append(Paragraph("Subproject <b>pod/bgsub</b> (GitHub mit-eremin/pod-subtract, main at " + HEAD + "), Dmitry Eremin, Nelson Lab, Caltech. "
+S.append(Paragraph("Subproject <b>pod/bgsub</b> (GitHub mit-eremin/pod-subtract), Dmitry Eremin, Nelson Lab, Caltech. "
                    "Split out of pod/background on 2026-11-05 at background commit f1e93f5; package <b>bgsub</b>, 47 tests pass, self-contained "
                    "(vendored count law, detector, masks, centre, provenance; a frozen simulator-v1 frame bank, 716 frames reproduced bit for bit). "
                    "Page 1 states the problem and where the algorithm stands by its own rules; page 2 measures it against pyREyes and XDS / superxds on real frames (compare v0, same day), then the defects and next steps. "
@@ -123,14 +123,14 @@ S.append(Paragraph("4. Measured against pyREyes and XDS / superxds on real frame
 S.append(Paragraph("40 real Apollo frames: 30 bin-8 fly-scan snapshots (1024<super>2</super>, 20 REyes Good + 10 Bad, two sessions, ~0.08 counts / px background) and 10 frames of a bin-4 rotation movie "
                    "(2048<super>2</super>, XDS's own SPOT.XDS as a reference). <b>pyREyes</b> 3.6.3 has no background model (difference of Gaussians, global mean + k std threshold, components, a count; no per-peak intensity; "
                    "re-implemented and verified bit for bit). <b>superxds</b> is a line-by-line Fortran port of XDS (static box-mean table x one scalar per frame; Poisson strong-pixel test; 'intensity' = sum of significance labels); "
-                   "it does not build on macOS / arm64, so the installed XDS stood in. All peaks were measured on the ORIGINAL frame in the same disc (3 px at bin 8, 5 px at bin 4).", st_b))
+                   "it does not build on macOS / arm64; its math was ported to numpy and validated against XDS (tables 99.98 % exact, all 5502 spots identical). All peaks were measured on the ORIGINAL frame in the same disc (3 / 5 px).", st_b))
 S.append(tbl([
     ["Question", "bgsub v2.1", "pyREyes", "XDS / superxds", "flat annulus (XDS / DIALS-style local box)"],
-    ["Background on spot-free pixels, by radius", "unbiased: |residual| < 1 % in every 32-px band, both binnings; bin 8: mean and count-law variance match the data to 1e-4", "none (band-pass only)", "bin 4: -9 to -14 % in the halo, high in the tail; bin 8: collapses (0.07 % of pixels pass its background screen)", "fit to the same pixels: not a test"],
+    ["Background on spot-free pixels, by radius", "unbiased: |residual| < 1 % in every 32-px band, both binnings; bin 8: mean and count-law variance match the data to 1e-4", "none (band-pass only)", "bin 4: -9 to -14 % in the halo, high in the tail (static table x one scalar per frame); bin 8: 0.06 % candidate pixels, none strong at SIGNAL_PIXEL 7", "fit to the same pixels: not a test"],
     ["Peaks per frame (median)", "bin 8 Good 23 / Bad 14; bin 4 187 (count-law flags, >= 5 sigma per component)", "bin 8 Good 14 / Bad 17 (half are single stray electrons; fires on the stop edge); bin 4 45", "bin 8: 4 (defaults, 15-frame pseudo-sweep; single frames fail); bin 4: 46 (defaults), 9 (owner 4/7/5)", "-"],
     ["Agreement", "holds 74-87 % of XDS and pyREyes peaks at bin 4 (74 % of XDS at bin 8) + 2-4x more weak high-angle candidates", "87 % of its bin-4 peaks are in bgsub; 58 % in XDS", "76 % in bgsub; 56 % in pyREyes", "-"],
     ["Background under the same peaks (median ratio to bgsub) and net intensity", "1 (reference); net I median 23 (bin 8), 101 (bin 4) counts", "no background", "1.04 (bin 8), 1.01 (bin 4): agrees under peaks although wrong between them", "<b>1.15 at both binnings: loses 5 % (bin 8) and 14 % (bin 4) of the net intensity, ~17 % on bright spots</b>"],
-    ["Time per frame (this Mac)", "62 ms (1024<super>2</super>), 155 ms (2048<super>2</super>), Python + numba", "31 / 149 ms (two blurs)", "33 / 125 ms (Fortran, 4 threads)", "-"],
+    ["Time per frame (this Mac)", "62 ms (1024<super>2</super>), 155 ms (2048<super>2</super>), Python + numba", "31 / 149 ms (two blurs)", "33 / 125 ms (Fortran); same math in numpy 130 / 550 ms", "-"],
 ], [1.35 * inch, 1.75 * inch, 1.35 * inch, 1.55 * inch, 1.3 * inch]))
 S.append(Spacer(1, 3))
 S.append(img(FIG, 0.9 * W))
@@ -140,7 +140,7 @@ S.append(Paragraph("Eight spots on one bin-4 frame found by all three methods: r
 S.append(Paragraph("5. Known defects and limits", st_h))
 S.extend(bullets([
     "<b>Sparse counts (R1).</b> The one failing synthetic cell (0.2 counts per box) had no statistical power (SE 0.72 % vs a 0.5 % limit); on 64 fresh frames H2.1 is -0.47 +- 0.72 %. Needs a power-adequate re-test, possibly a count-level-aware gate.",
-    "<b>Sharp rings (A277).</b> A film ring narrower than the spline knots (4.6 A, one classic session) is not removed: most of its pixels are count-law flags. Open option: a ring-zone high-breakdown first pass.",
+    "<b>Sharp rings (A277).</b> A film ring narrower than the spline knots (4.6 A, one classic session) is not removed; open option: a ring-zone high-breakdown first pass.",
     "<b>Coverage.</b> Apollo bin 8 and bin 4 tested on real frames; bin 16 synthetic only (variance not honest, A196); <b>CETA-D bin 2 and TVIPS F30 untested</b>, need an integrating-detector variance model first. Not modelled: structure neither smooth on the model's scales nor linear at the annulus scale (A279). compare v0 is descriptive, not pre-registered, no truth for real peaks.",
 ]))
 
@@ -149,7 +149,7 @@ S.extend(bullets([
     "<b>1. Background-only validity spec</b>, pre-registered, with thresholds the owner endorses: bias everywhere and under masked spots with stated power; per-pixel variance honesty; stop / bar / crystal zones; count-law regimes; timing reported, not gated. "
     "<b>2.</b> Bring v2.1 to valid under it (sparse-cell re-test; optional ring-zone pass). <b>3-5.</b> Integrating-detector variance model, then CETA-D bin 2 and TVIPS F30 validation; honest variance at bin 16.",
     "<b>Owner decisions:</b> (a) per-frame <b>output format</b> (proposed: float32 background map + per-pixel variance map in stored counts, subtracted frame on request, sidecar with version / count law / zero level / mask / centre); "
-    "(b) <b>datasets</b> for CETA-D bin 2 and TVIPS F30; (c) whether to run superxds itself on a Linux x86-64 box (B1); (d) the mov11 XDS.INP beam centre is 75 px off and was never refined by XDS (B2): re-check the XDS-merge study.",
+    "(b) <b>datasets</b> for CETA-D bin 2 and TVIPS F30; (c) the mov11 XDS.INP beam centre is 75 px off and was never refined by XDS (B2): re-check the XDS-merge study.",
 ]))
 
 doc.build(S, onFirstPage=footer, onLaterPages=footer)

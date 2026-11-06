@@ -27,3 +27,5 @@ with new dates. Path mapping when reading them:
 - `2026-11-05_bgsub_state_2p.pdf`: two-page state of the problem for the owner (goal, approach, v2.1 verdict, real D0
   performance, defects, next steps, owner decisions). Built by `scripts/state_pdf_2026_11_05.py` (needs reportlab:
   `~/micromamba/envs/serial3ded/bin/python`); numbers from CLAUDE.md, the v2.1 report and ROADMAP.md, no new measurement.
+- `2026-11-05_compare_v0.md`: bgsub vs pyREyes vs XDS / superxds on real bin-8 and bin-4 frames (mechanisms, peaks,
+  intensities, radial residuals; Sec. 1.4 the validated numpy port of the superxds math). Figures `notes/figures/compare_v0/`.

@@ -33,7 +33,7 @@ Judge everything on the BACKGROUND only (CLAUDE.md, Goal).
 
 - Owner clarified: the 50 ms gate is relative (single-CPU Python); judge on correctness and overall efficiency.
   Keep timing as a reported number, not a verdict, in the validity spec (item 1).
-- If a Linux x86-64 box is available, run superxds itself (B1); otherwise XDS stands in.
+- superxds math runs here as a validated numpy port (`scripts/superxds_py.py`); the Linux binary would add nothing (B1 closed).
 - Check the xds_merge study's IDXREF/INTEGRATE for the wrong beam origin of mov11 (B2, 75 px).
 - A peak finder on the subtracted frame (split merged flag components, B5) only if the owner wants one; not the product.
 
