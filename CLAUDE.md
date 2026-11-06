@@ -22,6 +22,9 @@ background estimate.
 - NO OTHER PACKAGES: do not propose DIALS, nXDS or similar; the methods are developed here. XDS was only ever a
   reference measurement.
 - The forward model / simulator stays in `pod/background` (its priority 1); here it is a test bench only.
+- OWNER 2026-11-05 (compare v0): the speed gate is RELATIVE (single-CPU Python is slow); the questions are whether the
+  subtraction works and how efficient it is overall. External tools (pyREyes, XDS / superxds) are REFERENCE
+  MEASUREMENTS and may be run for comparison; the methods stay in-house. See `notes/reports/2026-11-05_compare_v0.md`.
 
 ## The algorithm (v1 default; v2, v2.1 opt-in; v0 reproducible)
 

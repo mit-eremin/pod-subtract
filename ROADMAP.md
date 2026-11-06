@@ -29,6 +29,14 @@ Judge everything on the BACKGROUND only (CLAUDE.md, Goal).
      `legacy/podbg_scripts/` (bgsub_v0_real, bgsub_v2_real, bgsub_v2_1_real, *_tables); re-issue the affected tables.
    - Optional: the sharp-ring defect (A277): a high-breakdown ring-zone first pass.
 
+## Follow-ups from compare v0 (2026-11-05)
+
+- Owner clarified: the 50 ms gate is relative (single-CPU Python); judge on correctness and overall efficiency.
+  Keep timing as a reported number, not a verdict, in the validity spec (item 1).
+- If a Linux x86-64 box is available, run superxds itself (B1); otherwise XDS stands in.
+- Check the xds_merge study's IDXREF/INTEGRATE for the wrong beam origin of mov11 (B2, 75 px).
+- A peak finder on the subtracted frame (split merged flag components, B5) only if the owner wants one; not the product.
+
 ## Next
 
 3. **Integrating-detector variance model, then CETA-D bin 2 validation.** `CountLaw.poisson(gain, read_var)` exists but

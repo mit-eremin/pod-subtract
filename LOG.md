@@ -54,3 +54,23 @@ background); the real-frame drivers (legacy, to port); all real data stays in ~/
 - Two-page PDF `notes/reports/2026-11-05_bgsub_state_2p.pdf` (state of the problem, for the owner), generator
   `scripts/state_pdf_2026_11_05.py` run with the serial3ded micromamba python (reportlab 5.1; neither venv has it).
   Content restates CLAUDE.md status, v2.1 report Sec. 4-8 and ROADMAP 1-6; figure real_d0_v2_v21.png. No new numbers.
+
+## 2026-11-05 (evening) — compare v0: bgsub vs pyREyes vs XDS/superxds on real frames
+
+- Owner, in conversation: the speed gate is relative (single-CPU Python); the question is whether the subtraction
+  WORKS and how efficient it is, measured against superxds (XMB5/superxds) and pyREyes (theNelsonLab/pyREyes) on 1024
+  and 2048 images: peaks found, intensity distributions, peaks mapped back onto the original image, intensity change
+  after subtraction, mechanisms. External tools are yardsticks (allowed), not methods.
+- Clones in `../python_packages/{superxds,pyREyes}`. superxds does not build on macOS/arm64 (B1); XDS
+  (`/usr/local/bin/xds`) used as the stand-in, mechanism documented from the superxds source. pyREyes 3.6.3 scoring
+  re-implemented exactly (verified bit for bit on 4 frames).
+- `scripts/compare_v0.py` (select, bgsub, pyreyes, xds) + `scripts/compare_v0_eval.py`; data `~/pod_data/bgsub/compare_v0/`
+  (40 frames: 30 bin-8 Good/Bad from atlas_spots_v0 caches, 10 bin-4 frames of xds_merge mov11 with its SPOT.XDS);
+  figures `notes/figures/compare_v0/`; report `notes/reports/2026-11-05_compare_v0.md` (B1-B6).
+- Results: bgsub background unbiased < 1 % in every radial band at both binnings (bin 8: mean and variance match the
+  count law to 1e-4); XDS table -9..-14 % in the bin-4 halo, collapses at bin 8 (0.07 % background pixels); pyREyes has
+  no background. Peaks: bgsub flags hold 74-87 % of XDS/pyREyes peaks + 2-4x more weak ones; pyREyes at bin 8 counts
+  single electrons and the stop edge; XDS needs defaults + a sweep at bin 8. Flat annulus removes 15 % more background
+  and loses 5-14 % net intensity (17 % on bright spots). Timing per frame: bgsub 62-155 ms, DoG 31-149 ms, COLSPOT 33-125 ms.
+- Found on the way: mov11's XDS.INP beam centre is 75 px off (B2, never refined); Friedel-pair centre used.
+- venv additions: tifffile, scikit-image, matplotlib (harness extra).
