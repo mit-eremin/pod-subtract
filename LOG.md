@@ -103,3 +103,12 @@ background); the real-frame drivers (legacy, to port); all real data stays in ~/
   Stop edge glow 20-40 px on both integrating detectors not modelled (B8); CETA-D fits 1.4-3.8 s per frame (B9).
 - Harness lessons: stop mask relative to the frame's median (absolute pedestal rule failed at bin 16); E = BKGINIT x RATIO
   without a second /1000; mask-adjacent peaks dropped for all methods.
+
+## 2026-11-07 — wrap-up overview PDF
+
+- `notes/reports/2026-11-07_bgsub_overview_2p.pdf` (generator `scripts/overview_pdf_2026_11_07.py`, serial3ded python):
+  what the subtraction is, the mathematics written out (observation model, linear model, cross-fitted WLS and why it is
+  unbiased for any count law, tail-test exclusion, sandwich variance), how universal it is (by construction / declared per
+  detector / tested / not universal), a how-it-works figure on real Apollo bin 8, bin 16 and CETA-D frames
+  (`notes/figures/overview_2026-11-07/how_it_works.png`, from the compare-v1 frames), status table, next steps, owner
+  decisions. Repo clean and pushed; nothing running.

@@ -31,3 +31,4 @@ with new dates. Path mapping when reading them:
   intensities, radial residuals; Sec. 1.4 the validated numpy port of the superxds math). Figures `notes/figures/compare_v0/`.
 - `2026-11-05_compare_v1_images.md` + `2026-11-05_compare_v1_panels.pdf`: the three methods on real frames from Apollo bin 4 / 8 / 16,
   CETA-D and TVIPS, with one image panel per dataset (`notes/figures/compare_v1/`).
+- `2026-11-07_bgsub_overview_2p.pdf`: two-page wrap-up for the owner: the mathematics, universality, how-it-works images, status.
