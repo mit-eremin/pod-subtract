@@ -77,9 +77,9 @@ v2.1 is NOT VALID by its own pre-registered verdict, by two narrow margins, both
 |---|---|
 | Apollo bin 8 (fly-scan, 1024^2) | well tested: real fly-scan test sessions with injected peaks in the F / BA / CN regimes (17 sessions in v0; the v1-v2.1 harness reuses them) and synthetic |
 | Apollo bin 4 (classic, 2048^2) | real classic sessions (20 test + 9 confirmation), synthetic; Poisson-like (1 count = 1 e) |
-| Apollo bin 16 (512^2) | SYNTHETIC ONLY; variance not honest (saturated spots on the wrong dead-time branch, g oscillating; A196) |
-| CETA-D bin 2 (integrating) | NOT TESTED; needs an integrating-detector variance model (gain, read noise, no rounding) first |
-| TVIPS F30 (TF30, 300 kV) | NOT TESTED; `pod/ringcal` has TVIPS readers (`ringcal.io`, local and remote header parsing) |
+| Apollo bin 16 (512^2) | real frames since 2026-11-05 (compare v1: the FLYSCAN/20260902 verify miniscan, 55 frames, the only bin-16 session in the archive; bgsub flat field, 53 peaks/frame) + synthetic; variance at saturated cores not honest (A196) |
+| CETA-D bin 2 (integrating) | runs on real frames (compare v1, Arctica 2025-02-12 grossular movie, local copy) with a DECLARED law estimated from the frame: poisson(gain 3.5, read var 8) x a 3x3 window factor 2.8 for spatially CORRELATED noise; a calibrated law (gain, read noise, correlation, from dark / flat frames) is still needed before any validity claim |
+| TVIPS F30 (TF30, 300 kV) | runs on real frames (compare v1, F30 2025-02-25 movie, local copy) with a declared law poisson(gain 10.3, read var 0) x window factor 3.1; same caveat as CETA-D; `pod/ringcal` has TVIPS readers |
 
 ## Detector facts that matter (Apollo; measured in pod/background, full text there)
 

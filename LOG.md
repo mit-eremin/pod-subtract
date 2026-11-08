@@ -112,3 +112,32 @@ background); the real-frame drivers (legacy, to port); all real data stays in ~/
   detector / tested / not universal), a how-it-works figure on real Apollo bin 8, bin 16 and CETA-D frames
   (`notes/figures/overview_2026-11-07/how_it_works.png`, from the compare-v1 frames), status table, next steps, owner
   decisions. Repo clean and pushed; nothing running.
+
+## 2026-11-07 (session close-out; the session ran 2026-11-05 afternoon to 2026-11-07)
+
+**Did:** Linked the repo to `mit-eremin/pod-subtract` and pushed (a transient GitHub `commit_refs_rules` rejection
+blocked all pushes for ~1 h on 11-05 and cleared by itself). Built the 2-page state PDF, then three studies at the
+owner's request: compare v0 (bgsub vs pyREyes vs XDS on 30 real bin-8 + 10 bin-4 frames: bgsub unbiased < 1 % in every
+radial band, flat annulus loses 5-14 % net intensity, XDS table -9..-14 % in the halo, pyREyes has no background), the
+superxds math ported to numpy and validated against XDS to the last digit (B1 closed; corrected my own misreading of
+COLSPOT.LP's NBKG, which counts cleared candidates), and compare v1 (one real dataset per detector x binning: Apollo bin
+4 / 8 / 16, CETA-D, TVIPS; image panels; peaks per frame bgsub / pyREyes / superxds 156/50/34, 22/20/4, 53/19/2,
+101/20/12, 34/9/12). Dead ends ruled out on the way: a Gaussian z-score detector at 1e-4 counts/px (single counts become
+50 sigma; the exact count-law tails are the right statistic), an absolute pedestal rule for the stop mask (swallowed the
+bin-16 frame), a gain/read-noise regression on flag-truncated residuals (underestimated the variance 2x on TVIPS), and a
+plain Poisson law for the integrating detectors (8-47 % of pixels flagged). The 2048^2 run was also wrongly scaled once
+(E = BKGINIT x RATIO, no second /1000). Final deliverable: the 2-page overview PDF (mathematics, universality, images).
+
+**Decided:** The speed gate is relative (owner): timing is reported, not a verdict. External tools are yardsticks and
+may be run; the methods stay in-house (owner). The v0-v2.1 thresholds were the orchestrator's and are to be replaced by
+owner-endorsed ones in the validity spec. The superxds binary is not needed: the validated port is the algorithm. CETA-D
+and TVIPS run with a declared law estimated from the frame (robust MAD variance per band + a 3x3 window correlation
+factor) until a calibrated law exists, because the correlation, not only gain and read noise, is what the tests need.
+Peaks within 3 px of the mask are dropped for every method in the comparisons. Mask-stop rule = relative to the frame's
+median, component holding the beam centre.
+
+**Open:** ROADMAP 1 (background-only validity spec with the owner's thresholds), 2 (v2.1 to valid: powered sparse-cell
+re-test, A281 port), 3 (calibrated integrating-detector law WITH spatial correlation; movies local under
+~/pod_data/bgsub/compare_v1/private/). Owner decisions: thresholds, per-frame output format, CETA-D / TVIPS calibration
+sessions and dark / flat frames, the XDS-merge mov11 beam origin (75 px off, never refined; B2). Known limits to carry:
+stop-edge glow on CETA-D / TVIPS (B8), slow bgsub fits on CETA-D (B9), merged adjacent spots in flag components (B5).
